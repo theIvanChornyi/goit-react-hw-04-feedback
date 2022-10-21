@@ -11,7 +11,7 @@ export const Statistics = stats => {
           <StatName>
             {key === 'positivePercentage'
               ? 'positive feedback  : '
-              : `${key.toLowerCase()}: `}
+              : `${key}: `}
           </StatName>
           <StatValue>{stats[key]}</StatValue>
         </Box>

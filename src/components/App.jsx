@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { Box } from './Box';
 import { Section } from 'components/Section';
@@ -12,8 +12,6 @@ export const App = () => {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
-  const [total, setTotal] = useState(0);
-  const [positivePercentage, setPositivePercentage] = useState(0);
 
   const addMark = button => {
     switch (button) {
@@ -32,31 +30,29 @@ export const App = () => {
     }
   };
 
-  useEffect(() => {
-    if (good || bad || neutral) {
-      setTotal(pS => pS + 1);
-    }
-  }, [bad, good, neutral]);
+  const totalAmountMarks = () => good + neutral + bad;
 
-  useEffect(() => {
+  const positivePercentage = () => {
+    const total = totalAmountMarks();
     const percentage = (good / total) * 100;
     const PercentageInt = Number.parseInt(percentage);
-    setPositivePercentage(good ? PercentageInt + '%' : '0%');
-  }, [good, total]);
+    return total > 0 ? PercentageInt + '%' : '0%';
+  };
+
   return (
     <Box as="main" color="accent" pt={7} pb={7} textAlign="center">
       <Section title={'Please leave feedback'}>
         <FeedbackOptions options={btnsName} onLeaveFeedback={addMark} />
       </Section>
       <>
-        {total > 0 ? (
+        {totalAmountMarks() > 0 ? (
           <Section title={'Statistics'}>
             <Statistics
               good={good}
               neutral={neutral}
               bad={bad}
-              total={total}
-              positivePercentage={positivePercentage}
+              total={totalAmountMarks()}
+              positivePercentage={positivePercentage()}
             />
           </Section>
         ) : (
